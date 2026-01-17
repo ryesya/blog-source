@@ -1,16 +1,16 @@
-name: Deploy Hexo Blog
+name: Hexo Deploy
 
 on:
   push:
     branches:
-      - main
+      - main   # 如果你是 master 就改成 master
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -18,18 +18,20 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install dependencies
+      - name: Install dependencies (force CJS)
         run: |
           npm install
-          npm install strip-ansi@6
+          npm install strip-ansi@6.0.1 --save-exact
+          npm install hexo-cli -g
 
-      - name: Generate Hexo files
-        run: |
-          npx hexo clean
-          npx hexo generate
+      - name: Hexo clean
+        run: ./node_modules/.bin/hexo clean
+
+      - name: Hexo generate
+        run: ./node_modules/.bin/hexo generate
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+        run: ./node_modules/.bin/hexo deploy
+        env:
+          GIT_USER: ${{ secrets.GIT_USER }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
