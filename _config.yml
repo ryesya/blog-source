@@ -1,0 +1,28 @@
+# Hexo 主配置
+title: My Blog
+subtitle: 
+description: 
+author: YourName
+language: zh-CN
+timezone: Asia/Shanghai
+
+# 主题
+theme: butterfly
+
+# URL 配置
+url: http://localhost:4000
+root: /
+
+# Deployment（可以暂时空着）
+deploy:
+  type: git
+  repo: git@github.com:ryesya/Githubryesya.github.io.git
+  branch: main
+
+
+# 插件
+plugins:
+  - hexo-generator-search
+  - hexo-wordcount
+
+
